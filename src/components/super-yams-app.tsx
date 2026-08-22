@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import Image from "next/image";
+import { useEffect, useRef, useState } from "react";
 import {
   CATEGORY_META,
   DEFAULT_RULES,
@@ -201,6 +202,8 @@ export function SuperYamsApp() {
   const [draftCount, setDraftCount] = useState(1);
   const [draftTotal, setDraftTotal] = useState(20);
   const [draftSec, setDraftSec] = useState(false);
+  const [showFinale, setShowFinale] = useState(false);
+  const wasFinished = useRef(false);
 
   useEffect(() => {
     try {
@@ -248,6 +251,15 @@ export function SuperYamsApp() {
     game.players.length > 0 &&
     game.players.every((player) => getFilledCategoryCount(player.scores) === TOTAL_CATEGORY_COUNT);
   const winner = leaderboard[0];
+  const loser = leaderboard[leaderboard.length - 1];
+
+  useEffect(() => {
+    if (isFinished && !wasFinished.current) {
+      setShowFinale(true);
+    }
+
+    wasFinished.current = isFinished;
+  }, [isFinished]);
 
   const editorPlayer = editor
     ? game.players.find((player) => player.id === editor.playerId) ?? null
@@ -290,6 +302,7 @@ export function SuperYamsApp() {
 
     setSetupPlayers(nextSetupPlayers);
     setSetupRules(cloneRules(game.rules));
+    setShowFinale(false);
     closeEditor();
     setView("setup");
   }
@@ -1178,6 +1191,60 @@ export function SuperYamsApp() {
                   Effacer
                 </button>
               ) : null}
+            </div>
+          </section>
+        </div>
+      ) : null}
+
+      {showFinale && winner && loser ? (
+        <div className="finale-overlay" role="presentation">
+          <section
+            className="finale-card"
+            role="dialog"
+            aria-modal="true"
+            aria-label="Résultat de la partie"
+          >
+            <span className="eyebrow">Partie terminée</span>
+            <h2>Les résultats</h2>
+            <div className="finale-results">
+              <article className="finale-player finale-winner">
+                <div className="finale-image">
+                  <Image src="/images/win.jpg" alt="" fill sizes="(max-width: 560px) 45vw, 240px" />
+                </div>
+                <span className="finale-label">Gagnant</span>
+                <strong>{winner.name}</strong>
+                <span>{getGrandTotal(winner.scores, game.rules)} pts</span>
+              </article>
+              <article className="finale-player finale-loser">
+                <div className="finale-image">
+                  <Image src="/images/looser.jpg" alt="" fill sizes="(max-width: 560px) 45vw, 240px" />
+                </div>
+                <span className="finale-label">Dernier</span>
+                <strong>{loser.name}</strong>
+                <span>{getGrandTotal(loser.scores, game.rules)} pts</span>
+              </article>
+            </div>
+            {leaderboard.length > 2 ? (
+              <div className="finale-other-scores" aria-label="Autres scores">
+                <span className="finale-other-title">Autres joueurs</span>
+                <div className="finale-other-list">
+                  {leaderboard.slice(1, -1).map((player, index) => (
+                    <span key={player.id} className="finale-other-player">
+                      <small>#{index + 2}</small>
+                      <strong>{player.name}</strong>
+                      <b>{getGrandTotal(player.scores, game.rules)} pts</b>
+                    </span>
+                  ))}
+                </div>
+              </div>
+            ) : null}
+            <div className="finale-actions">
+              <button className="ghost-button" type="button" onClick={() => setShowFinale(false)}>
+                Voir la partie
+              </button>
+              <button className="primary-button" type="button" onClick={beginNewGame}>
+                Nouvelle partie
+              </button>
             </div>
           </section>
         </div>
