@@ -737,7 +737,7 @@ export function SuperYamsApp() {
             </div>
           </section>
 
-          <details className="panel utility-panel fade-up">
+          <details className="panel utility-panel fade-up" open>
             <summary>
               <span className="eyebrow">Etape 3</span>
               <span className="summary-title">Règles de votre famille</span>
@@ -855,6 +855,10 @@ export function SuperYamsApp() {
 
       {view === "game" && activePlayer ? (
         <>
+          <div className="active-player-banner" aria-live="polite">
+            <span>Joueur {activeIndex + 1}/{game.players.length}</span>
+            <strong>{activePlayer.name}</strong>
+          </div>
           <section className="panel hero-panel fade-up turn-panel">
             <div className="section-head">
               <div>
@@ -998,7 +1002,7 @@ export function SuperYamsApp() {
             </div>
           </section>
 
-          <details className="panel utility-panel fade-up">
+          <details className="panel utility-panel fade-up" open>
             <summary>
               <span className="eyebrow">Regles actives</span>
               <span className="summary-title">Règles de la partie</span>
@@ -1022,6 +1026,27 @@ export function SuperYamsApp() {
               Nouvelle partie
             </button>
           </section>
+
+          <nav className="fixed-player-nav" aria-label="Changer de joueur">
+            <button
+              className="fixed-player-button"
+              type="button"
+              onClick={() => navigatePlayer(-1)}
+            >
+              <strong>Precedent</strong>
+            </button>
+            <span className="fixed-player-current" aria-label={`Joueur actuel : ${activePlayer.name}`}>
+              <strong>{activePlayer.name}</strong>
+              <small>{activeIndex + 1}/{game.players.length}</small>
+            </span>
+            <button
+              className="fixed-player-button fixed-player-button-next"
+              type="button"
+              onClick={() => navigatePlayer(1)}
+            >
+              <strong>Suivant</strong>
+            </button>
+          </nav>
         </>
       ) : null}
 
@@ -1106,13 +1131,16 @@ export function SuperYamsApp() {
             ) : null}
 
             {CATEGORY_META[editor.category].supportsSec ? (
-              <label className="sec-toggle">
+              <label className={`sec-toggle ${draftSec ? "sec-toggle-active" : ""}`}>
                 <input
                   type="checkbox"
                   checked={draftSec}
                   onChange={(event) => setDraftSec(event.target.checked)}
                 />
-                <span>Fait sec: score double</span>
+                <span>
+                  <strong>Fait sec</strong>
+                  <small>Le score compte double</small>
+                </span>
               </label>
             ) : null}
 
@@ -1138,7 +1166,7 @@ export function SuperYamsApp() {
               >
                 Enregistrer
               </button>
-              <button className="ghost-button" type="button" onClick={scratchCurrentEntry}>
+              <button className="scratch-button" type="button" onClick={scratchCurrentEntry}>
                 Barrer a 0
               </button>
               {editorEntry ? (

@@ -642,17 +642,31 @@ button {
 .category-button-filled {
   background: linear-gradient(
     135deg,
-    rgba(255, 255, 255, 0.07),
-    rgba(31, 178, 166, 0.08)
+    rgba(31, 178, 166, 0.34),
+    rgba(16, 83, 78, 0.28)
   );
+  border-color: rgba(93, 238, 206, 0.45);
+  box-shadow: inset 4px 0 0 #4ee0bf, 0 8px 24px rgba(13, 103, 91, 0.16);
 }
 
 .category-button-scratch {
   background: linear-gradient(
     135deg,
-    rgba(255, 111, 116, 0.14),
-    rgba(255, 255, 255, 0.05)
+    rgba(255, 75, 85, 0.34),
+    rgba(115, 29, 37, 0.28)
   );
+  border-color: rgba(255, 123, 130, 0.52);
+  box-shadow: inset 4px 0 0 #ff777f, 0 8px 24px rgba(135, 28, 38, 0.16);
+}
+
+.category-button-filled .category-detail,
+.category-button-filled .category-score {
+  color: #baffee;
+}
+
+.category-button-scratch .category-detail,
+.category-button-scratch .category-score {
+  color: #ffd3d6;
 }
 
 .category-copy {
@@ -733,15 +747,38 @@ button {
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 12px 14px;
+  padding: 15px 16px;
   border-radius: var(--radius-md);
-  background: rgba(255, 255, 255, 0.05);
+  background: linear-gradient(135deg, rgba(255, 210, 122, 0.2), rgba(255, 131, 86, 0.14));
+  border: 1px solid rgba(255, 210, 122, 0.38);
+  color: #fff0cc;
+  cursor: pointer;
+  transition: transform 180ms ease, background-color 180ms ease;
 }
 
 .sec-toggle input {
-  width: 18px;
-  height: 18px;
+  width: 24px;
+  height: 24px;
   accent-color: var(--accent);
+}
+
+.sec-toggle span {
+  display: grid;
+  gap: 2px;
+}
+
+.sec-toggle strong {
+  font-size: 1.04rem;
+}
+
+.sec-toggle small {
+  color: #ffdca0;
+}
+
+.sec-toggle-active {
+  background: linear-gradient(135deg, rgba(255, 210, 122, 0.42), rgba(255, 131, 86, 0.3));
+  border-color: #ffd27a;
+  box-shadow: 0 0 0 3px rgba(255, 210, 122, 0.12);
 }
 
 .preview-card {
@@ -783,6 +820,113 @@ button {
   justify-content: center;
 }
 
+.scratch-button {
+  border: 1px solid rgba(255, 121, 128, 0.7);
+  border-radius: 999px;
+  padding: 11px 15px;
+  background: linear-gradient(135deg, #9d3038, #d94e57);
+  color: #fff4f4;
+  font-weight: 800;
+  box-shadow: 0 8px 20px rgba(151, 38, 48, 0.25);
+}
+
+.fixed-player-nav {
+  position: fixed;
+  z-index: 20;
+  left: 50%;
+  bottom: max(12px, env(safe-area-inset-bottom));
+  width: min(calc(100% - 24px), 536px);
+  transform: translateX(-50%);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  gap: 8px;
+  align-items: stretch;
+  padding: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 22px;
+  background: rgba(9, 19, 26, 0.92);
+  backdrop-filter: blur(18px);
+  box-shadow: 0 16px 42px rgba(0, 0, 0, 0.38);
+}
+
+.active-player-banner {
+  position: fixed;
+  z-index: 20;
+  top: max(12px, env(safe-area-inset-top));
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  max-width: calc(100% - 32px);
+  padding: 8px 13px;
+  border: 1px solid rgba(255, 210, 122, 0.34);
+  border-radius: 999px;
+  background: rgba(9, 19, 26, 0.9);
+  color: var(--accent-gold);
+  backdrop-filter: blur(16px);
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.28);
+}
+
+.active-player-banner span {
+  color: var(--muted);
+  font-size: 0.74rem;
+  white-space: nowrap;
+}
+
+.active-player-banner strong {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 0.92rem;
+}
+
+.fixed-player-button {
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 9px 12px;
+  border: 0;
+  border-radius: 15px;
+  background: rgba(255, 255, 255, 0.07);
+  color: var(--text);
+  text-align: left;
+}
+
+.fixed-player-button-next {
+  background: linear-gradient(135deg, var(--accent), #ffab74);
+  color: #2d1206;
+}
+
+.fixed-player-button strong {
+  font-size: 0.92rem;
+}
+
+.fixed-player-current {
+  min-width: 62px;
+  display: grid;
+  gap: 1px;
+  align-content: center;
+  justify-items: center;
+  padding: 0 6px;
+  color: var(--accent-gold);
+  text-align: center;
+}
+
+.fixed-player-current strong {
+  max-width: 88px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 0.82rem;
+}
+
+.fixed-player-current small {
+  font-size: 0.7rem;
+  font-weight: 800;
+}
+
 @keyframes fade-up {
   from {
     opacity: 0;
@@ -812,6 +956,14 @@ button {
 
   .turn-nav {
     grid-template-columns: 1fr;
+  }
+
+  .fixed-player-nav {
+    width: calc(100% - 16px);
+  }
+
+  .fixed-player-button {
+    padding-inline: 10px;
   }
 
   .player-manager-row {
